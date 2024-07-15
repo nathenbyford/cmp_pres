@@ -23,18 +23,19 @@ $presentation-heading-font-weight: 400;
 $body-bg: #fefefe !default;
 $body-color: #000 !default;
 $selection-bg: #134e13;
-$baylor_green: #134e13;
-$university-gold: #FFB81C;
+$stone: #092B2B;
+$blue: #7BB5DC;
+$orange: #FF6720;
 $gray70: #b3b3b3;
 
 .subtext {
 	font-size:     .85em;
-	color: $baylor_green;
+	color: $stone;
 }
 
 .subsubtext {
 	font-size:     .70em;
-	color: $gray70;
+	color: #F28C28;
 }
 
 .emph {
@@ -50,6 +51,21 @@ $gray70: #b3b3b3;
   text-align: left;
 }
 
+.title {
+	font-size: 42pt !important;
+}
+
+.date::before {
+  content: "";
+  display: block;
+	border: none;
+	border-radius: 2px;
+	background-color: $stone;
+	color: #000;
+	height: 4px;
+	width: 100%;
+}
+
 .quarto-title-authors {
     display: flex;
     justify-content: left;
@@ -61,16 +77,17 @@ $gray70: #b3b3b3;
     }
 }
   
+/*--
 .quarto-title-author::before{
   content: "";
   display: block;
 	border: none;
-	background-color: $baylor_green;
+	background-color: $stone;
 	color: #000;
-	height: 2px;
-	border-radius: 4px;
+	height: 4px;
 	width: 100%;
 }
+--*/
 
 .reveal a {
 	line-height: 1.5em;
@@ -89,12 +106,12 @@ $gray70: #b3b3b3;
 // Lists
 .reveal .slide ul li {
   list-style-type: none;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .reveal .slide ul li::before{
   content: '➤';
-  color: $baylor_green;
+  color: $blue; 
   position: relative;
   right: 10px;
   bottom: 5px;
@@ -102,11 +119,11 @@ $gray70: #b3b3b3;
 }
 
 .reveal .slide ul ul li::before{
-  color: $university-gold;
+  color: $orange;
 }
 
 .reveal .slide ul ul ul li::before{
-  color: $baylor_green;
+  color: $blue;
 }
 
 .reveal .slide ol li {
@@ -158,9 +175,9 @@ h2::after.title {
 // inline
 .reveal code {
 	font-size: 70%;
-	background-color: #afb8c133;
+	background-color: #afb8c123;
 	color: #000;
-	padding: 4px;
+	padding: 6px;
 	border-radius: 6px;
 }
 
@@ -177,19 +194,33 @@ h2::after.title {
 }
 
 .def {
-	// border: 2px solid $university-gold;
+	// border: 2px dashed $orange;
 	width: 90%;
 	border-radius: 6px !important;
 	padding: 10px;
 	margin: auto;
 	background-color: #eeeeee;
+	font-size: 80%;
 }
 
+/*--
 .reveal h2 {
-	background-color: #154734;
+	background-color: $stone;
 	padding: 5px 0px 5px 10px;
 	border-radius: 10px;
 	color: #fafafa;
+}
+--*/
+
+.reveal h2::after {
+  content: "";
+	display: block;
+	border: none;
+	border-radius: .5px;
+	background-color: $stone;
+	color: $stone;
+	height: 1px;
+	margin: 0 0 0 0;
 }
 
 .small-font {

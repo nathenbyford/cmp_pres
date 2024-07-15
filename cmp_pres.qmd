@@ -1,29 +1,82 @@
 ---
-title: 'Title'
+title: 'Generalized Linear Models'
+subtitle: 'For Over-Dispersed Data'
 date: ''
 format: 
   baylor_theme-revealjs:
-    author: 'Author'
-    footer: 'Author'
+    author: 'Nathen Byford'
+    footer: 'Nathen Byford'
+    controls: auto
 ---
 
-## Quarto
+```{r}
+#| include: false
 
-Quarto enables you to weave together content and executable code into a finished presentation. To learn more about Quarto presentations see <https://quarto.org/docs/presentations/>.
+library(tidyverse); theme_set(theme_bw())
+library(flextable)
+```
 
-## Bullets
+## Generalized Linear Models (GLMs)
 
-When you click the **Render** button a document will be generated that includes:
+In statistics, a generalized linear model (GLM) is a flexible generalization of ordinary linear regression. The GLM generalizes linear regression by allowing the linear model to be related to the response variable via a link function and by allowing the magnitude of the variance of each measurement to be a function of its predicted value.
 
--   Content authored with markdown
--   Output from executable code
+## Over-Dispersed Data
+- Over-dispersion in general refers to having variance greater than that assumed for the theoretical data model.  
+- Over-dispersion can also refer to having a variance that is greater than the mean
+    - Similarly equi-dispersion would refer to having variance equal to the mean.
 
-# Code
+::: {.callout-note}
+### Poisson regression
 
-## Basic code
+Poisson regression is the most popular method for modeling count data. The Poisson distribution brings with it the assumption of equi-dispersion that is often unsatisfied.
+:::
 
-When you click the **Render** button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+## Candidate Distributions
+
+- Negative-Binomial
+- Poisson-Lindley
+- Generalized Poisson
+- Conway-Maxwell-Poisson (CMP)
+
+## Negative-Binomial
+
+- Parameters: number of successes: $r$, probability of success: $p$.
+- Mean: $r(1-p)/p$
+- Variance: $r(1-p)/p^2$
+
+## Poisson-Lindley
+
+- Parameters: $\lambda$, $\theta$
+
+## Generalized Poisson
+
+- Parameters: $\lambda$, $\alpha$
+
+## Conway-Maxwell Poisson (CMP)
+
+- Parameters: $\lambda$, $\nu$
+
+## Model comparisons
+
+Often hard to find papers comparing all  model previously mentioned.
+
+- Bayesian paper compared Poisson, Negative Binomial, and CMP for longitudinal counts using DIC to compare. (Alam et al.)
 
 ```{r}
-1 + 1
+tribble(
+    ~Model, ~Poisson, ~NB, ~CMP,
+    "DIC", 1362.39, 1350.67, 1348.87
+) |>
+  flextable()
+```
+
+- Another Bayesian paper compared using AIC and shows the following results (Sellers and Shmueli)
+
+```{r}
+tribble(
+    ~Model, ~CMP, ~Poisson, ~"Neg-Bin",
+    "AIC", 5073, 5589, 5077
+) |>
+  flextable()
 ```

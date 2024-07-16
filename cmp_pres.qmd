@@ -59,14 +59,22 @@ Poisson regression is the most popular method for modeling count data. The Poiss
 
 ## Model comparisons
 
-Often hard to find papers comparing all  model previously mentioned.
+- 2008 Bayesian paper compares the Generalized Poisson distribution,
+
+```{r}
+tribble(
+  ~Model, ~Poisson, ~NB, ~GP,
+  "DIC", 1291.8, 1273.9, 1265.6
+) |> 
+  flextable()
+```
 
 - Bayesian paper compared Poisson, Negative Binomial, and CMP for longitudinal counts using DIC to compare. (Alam et al.)
 
 ```{r}
 tribble(
-    ~Model, ~Poisson, ~NB, ~CMP,
-    "DIC", 1362.39, 1350.67, 1348.87
+  ~Model, ~Poisson, ~NB, ~CMP,
+  "DIC", 1362.39, 1350.67, 1348.87
 ) |>
   flextable()
 ```
@@ -75,8 +83,8 @@ tribble(
 
 ```{r}
 tribble(
-    ~Model, ~CMP, ~Poisson, ~"Neg-Bin",
-    "AIC", 5073, 5589, 5077
+  ~Model, ~CMP, ~Poisson, ~"Neg-Bin",
+  "AIC", 5073, 5589, 5077
 ) |>
   flextable()
 ```

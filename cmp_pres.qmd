@@ -1,7 +1,6 @@
 ---
 title: 'Generalized Linear Models'
 subtitle: 'For Over-Dispersed Data'
-date: ''
 format: 
   baylor_theme-revealjs:
     author: 'Nathen Byford'
@@ -34,16 +33,19 @@ Poisson regression is the most popular method for modeling count data. The Poiss
 
 ## Candidate Distributions
 
-- Negative-Binomial
-- Poisson-Lindley
-- Generalized Poisson
-- Conway-Maxwell-Poisson (CMP)
+1. Negative-Binomial
+2. Poisson-Lindley
+3. Generalized Poisson
+4. Conway-Maxwell-Poisson (CMP)
 
 ## Negative-Binomial
 
-- Parameters: number of successes: $r$, probability of success: $p$.
-- Mean: $r(1-p)/p$
-- Variance: $r(1-p)/p^2$
+- Parameters: mean: $\mu$, dispersion: $k$[^1]
+- Variance: $\mu + \mu^2/k$
+    - Function of mean and dispersion parameter
+    - Clearly captures over-dispersion.
+
+[^1]: The classic negative-binomial is parameterized as number of success and probability of success, $r$ and $p$.
 
 ## Poisson-Lindley
 

@@ -34,7 +34,7 @@ Poisson regression is the most popular method for modeling count data. The Poiss
 ## Candidate Distributions
 
 1. Negative-Binomial
-2. Poisson-Lindley
+2. Doubble Poisson
 3. Generalized Poisson
 4. Conway-Maxwell-Poisson (CMP)
 
@@ -47,9 +47,10 @@ Poisson regression is the most popular method for modeling count data. The Poiss
 
 [^1]: The classic negative-binomial is parameterized as number of success and probability of success, $r$ and $p$.
 
-## Poisson-Lindley
+## Double Poisson
 
 - Parameters: $\lambda$, $\theta$
+- variance: $\lambda / \theta$
 
 ## Generalized Poisson
 

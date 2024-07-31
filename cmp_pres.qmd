@@ -59,8 +59,11 @@ Almost any real world count data is subject to the possibility of over-dispersio
 ## Causes
 
 - Increased variability of counts
+- Event clustering
 - Increased number of 0
-- Un-accounted covariates
+- Interaction effects
+- Measurement error
+- Environmental effects
 
 ## Candidate Distributions
 

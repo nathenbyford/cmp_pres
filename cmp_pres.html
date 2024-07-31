@@ -380,14 +380,76 @@ Nathen Byford
 </div>
 </div>
 </section>
+<section id="common-applicataions" class="slide level2">
+<h2>Common applicataions</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>Count data in Biology</li>
+<li>Epidemiology</li>
+<li>Finance</li>
+<li>Insurance claims</li>
+<li>Environmental studies</li>
+<li>etc.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="daily_stock_trades.png" style="width:80.0%"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="woodlark.png" style="width:50.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="def">
+<div class="subsubtext">
+<p>Almost any real world count data is subject to the possibility of over-dispersion.</p>
+</div>
+</div>
+</section>
+<section id="causes" class="slide level2">
+<h2>Causes</h2>
+<ul>
+<li>Increased variability of counts</li>
+<li>Increased number of 0</li>
+<li>Un-accounted covariates</li>
+</ul>
+</section>
 <section id="candidate-distributions" class="slide level2">
 <h2>Candidate Distributions</h2>
 <ol type="1">
 <li>Negative-Binomial</li>
-<li>Poisson-Lindley</li>
+<li>Double Poisson</li>
 <li>Generalized Poisson</li>
 <li>Conway-Maxwell-Poisson (CMP)</li>
 </ol>
+<ul>
+<li>Zero inflated disitributions
+<ul>
+<li>ZIP</li>
+<li>ZINB</li>
+<li>ZIDP/ZIGP</li>
+</ul></li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="cmp_pres_files/figure-revealjs/unnamed-chunk-2-1.png" width="480"></p>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="cmp_pres_files/figure-revealjs/unnamed-chunk-3-1.png" width="480"></p>
+</div>
+</div>
+</div>
+</div>
 </section>
 <section id="negative-binomial" class="slide level2">
 <h2>Negative-Binomial</h2>
@@ -400,10 +462,11 @@ Nathen Byford
 </ul></li>
 </ul>
 <aside><ol class="aside-footnotes"><li id="fn1"><p>The classic negative-binomial is parameterized as number of success and probability of success, <span class="math inline">\(r\)</span> and <span class="math inline">\(p\)</span>.</p></li></ol></aside></section>
-<section id="poisson-lindley" class="slide level2">
-<h2>Poisson-Lindley</h2>
+<section id="double-poisson" class="slide level2">
+<h2>Double Poisson</h2>
 <ul>
 <li>Parameters: <span class="math inline">\(\lambda\)</span>, <span class="math inline">\(\theta\)</span></li>
+<li>variance: <span class="math inline">\(\lambda / \theta\)</span></li>
 </ul>
 </section>
 <section id="generalized-poisson" class="slide level2">
@@ -416,6 +479,9 @@ Nathen Byford
 <h2>Conway-Maxwell Poisson (CMP)</h2>
 <ul>
 <li>Parameters: <span class="math inline">\(\lambda\)</span>, <span class="math inline">\(\nu\)</span></li>
+<li>Weighted Poison distribution with pmf: <span class="math display">\[
+f(Y = y) = \frac{\lambda^y}{(y!)^\nu Z(\lambda, \nu)}
+\]</span></li>
 </ul>
 </section>
 <section id="model-comparisons" class="slide level2">
@@ -426,7 +492,7 @@ Nathen Byford
 <div class="cell">
 <div class="cell-output-display">
 
-<div class="tabwid"><style>.cl-c1425d20{}.cl-c13ba7b4{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-c13e2872{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-c13e287c{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-c13e383a{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-c13e383b{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-c13e3844{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-c13e3845{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-c1425d20"><thead><tr style="overflow-wrap:break-word;"><th class="cl-c13e383a"><p class="cl-c13e2872"><span class="cl-c13ba7b4">Model</span></p></th><th class="cl-c13e383b"><p class="cl-c13e287c"><span class="cl-c13ba7b4">Poisson</span></p></th><th class="cl-c13e383b"><p class="cl-c13e287c"><span class="cl-c13ba7b4">NB</span></p></th><th class="cl-c13e383b"><p class="cl-c13e287c"><span class="cl-c13ba7b4">GP</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-c13e3844"><p class="cl-c13e2872"><span class="cl-c13ba7b4">DIC</span></p></td><td class="cl-c13e3845"><p class="cl-c13e287c"><span class="cl-c13ba7b4">1,291.8</span></p></td><td class="cl-c13e3845"><p class="cl-c13e287c"><span class="cl-c13ba7b4">1,273.9</span></p></td><td class="cl-c13e3845"><p class="cl-c13e287c"><span class="cl-c13ba7b4">1,265.6</span></p></td></tr></tbody></table></div>
+<div class="tabwid"><style>.cl-73153a80{}.cl-730cfb9a{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-73100b8c{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-73100b96{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-73102b26{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73102b30{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73102b31{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73102b32{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-73153a80"><thead><tr style="overflow-wrap:break-word;"><th class="cl-73102b26"><p class="cl-73100b8c"><span class="cl-730cfb9a">Model</span></p></th><th class="cl-73102b30"><p class="cl-73100b96"><span class="cl-730cfb9a">Poisson</span></p></th><th class="cl-73102b30"><p class="cl-73100b96"><span class="cl-730cfb9a">NB</span></p></th><th class="cl-73102b30"><p class="cl-73100b96"><span class="cl-730cfb9a">GP</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-73102b31"><p class="cl-73100b8c"><span class="cl-730cfb9a">DIC</span></p></td><td class="cl-73102b32"><p class="cl-73100b96"><span class="cl-730cfb9a">1,291.8</span></p></td><td class="cl-73102b32"><p class="cl-73100b96"><span class="cl-730cfb9a">1,273.9</span></p></td><td class="cl-73102b32"><p class="cl-73100b96"><span class="cl-730cfb9a">1,265.6</span></p></td></tr></tbody></table></div>
 </div>
 </div>
 <ul>
@@ -435,7 +501,7 @@ Nathen Byford
 <div class="cell">
 <div class="cell-output-display">
 
-<div class="tabwid"><style>.cl-c15a8012{}.cl-c15410ec{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-c1571170{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-c1571171{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-c1571ed6{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-c1571ee0{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-c1571eea{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-c1571eeb{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-c15a8012"><thead><tr style="overflow-wrap:break-word;"><th class="cl-c1571ed6"><p class="cl-c1571170"><span class="cl-c15410ec">Model</span></p></th><th class="cl-c1571ee0"><p class="cl-c1571171"><span class="cl-c15410ec">Poisson</span></p></th><th class="cl-c1571ee0"><p class="cl-c1571171"><span class="cl-c15410ec">NB</span></p></th><th class="cl-c1571ee0"><p class="cl-c1571171"><span class="cl-c15410ec">CMP</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-c1571eea"><p class="cl-c1571170"><span class="cl-c15410ec">DIC</span></p></td><td class="cl-c1571eeb"><p class="cl-c1571171"><span class="cl-c15410ec">1,362.39</span></p></td><td class="cl-c1571eeb"><p class="cl-c1571171"><span class="cl-c15410ec">1,350.67</span></p></td><td class="cl-c1571eeb"><p class="cl-c1571171"><span class="cl-c15410ec">1,348.87</span></p></td></tr></tbody></table></div>
+<div class="tabwid"><style>.cl-73261e9a{}.cl-731f3382{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-73218d3a{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-73218d44{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-73219c1c{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73219c26{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73219c27{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73219c30{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-73261e9a"><thead><tr style="overflow-wrap:break-word;"><th class="cl-73219c1c"><p class="cl-73218d3a"><span class="cl-731f3382">Model</span></p></th><th class="cl-73219c26"><p class="cl-73218d44"><span class="cl-731f3382">Poisson</span></p></th><th class="cl-73219c26"><p class="cl-73218d44"><span class="cl-731f3382">NB</span></p></th><th class="cl-73219c26"><p class="cl-73218d44"><span class="cl-731f3382">CMP</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-73219c27"><p class="cl-73218d3a"><span class="cl-731f3382">DIC</span></p></td><td class="cl-73219c30"><p class="cl-73218d44"><span class="cl-731f3382">1,362.39</span></p></td><td class="cl-73219c30"><p class="cl-73218d44"><span class="cl-731f3382">1,350.67</span></p></td><td class="cl-73219c30"><p class="cl-73218d44"><span class="cl-731f3382">1,348.87</span></p></td></tr></tbody></table></div>
 </div>
 </div>
 <ul>
@@ -444,7 +510,7 @@ Nathen Byford
 <div class="cell">
 <div class="cell-output-display">
 
-<div class="tabwid"><style>.cl-c167afe4{}.cl-c1620efe{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-c164317a{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-c1643184{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-c1643dfa{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-c1643e04{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-c1643e05{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-c1643e06{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-c167afe4"><thead><tr style="overflow-wrap:break-word;"><th class="cl-c1643dfa"><p class="cl-c164317a"><span class="cl-c1620efe">Model</span></p></th><th class="cl-c1643e04"><p class="cl-c1643184"><span class="cl-c1620efe">CMP</span></p></th><th class="cl-c1643e04"><p class="cl-c1643184"><span class="cl-c1620efe">Poisson</span></p></th><th class="cl-c1643e04"><p class="cl-c1643184"><span class="cl-c1620efe">Neg-Bin</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-c1643e05"><p class="cl-c164317a"><span class="cl-c1620efe">AIC</span></p></td><td class="cl-c1643e06"><p class="cl-c1643184"><span class="cl-c1620efe">5,073</span></p></td><td class="cl-c1643e06"><p class="cl-c1643184"><span class="cl-c1620efe">5,589</span></p></td><td class="cl-c1643e06"><p class="cl-c1643184"><span class="cl-c1620efe">5,077</span></p></td></tr></tbody></table></div>
+<div class="tabwid"><style>.cl-7337161e{}.cl-7330d86c{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-733320d6{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-733320e0{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-73332e1e{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73332e1f{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73332e28{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-73332e29{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-7337161e"><thead><tr style="overflow-wrap:break-word;"><th class="cl-73332e1e"><p class="cl-733320d6"><span class="cl-7330d86c">Model</span></p></th><th class="cl-73332e1f"><p class="cl-733320e0"><span class="cl-7330d86c">CMP</span></p></th><th class="cl-73332e1f"><p class="cl-733320e0"><span class="cl-7330d86c">Poisson</span></p></th><th class="cl-73332e1f"><p class="cl-733320e0"><span class="cl-7330d86c">Neg-Bin</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-73332e28"><p class="cl-733320d6"><span class="cl-7330d86c">AIC</span></p></td><td class="cl-73332e29"><p class="cl-733320e0"><span class="cl-7330d86c">5,073</span></p></td><td class="cl-73332e29"><p class="cl-733320e0"><span class="cl-7330d86c">5,589</span></p></td><td class="cl-73332e29"><p class="cl-733320e0"><span class="cl-7330d86c">5,077</span></p></td></tr></tbody></table></div>
 </div>
 </div>
 

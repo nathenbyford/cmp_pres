@@ -24,19 +24,105 @@ In statistics, a generalized linear model (GLM) is a flexible generalization of 
 - Over-dispersion can also refer to having a variance that is greater than the mean
     - Similarly equi-dispersion would refer to having variance equal to the mean.
 
-::: {.callout-note}
+::: {.callout-note icon=false}
 ### Poisson regression
 
 Poisson regression is the most popular method for modeling count data. The Poisson distribution brings with it the assumption of equi-dispersion that is often unsatisfied.
 :::
 
+## Common applicataions
+
+::::{.columns}
+:::{.column width="50%"}
+- Count data in Biology
+- Epidemiology
+- Finance
+- Insurance claims
+- Environmental studies
+- etc.
+:::
+
+:::{.column width="50%"}
+![](daily_stock_trades.png){width="80%" fig-align="center"}
+
+![](woodlark.png){width="50%" fig-align="center"}
+:::
+
+::::
+
+:::{.def}
+:::{.subsubtext}
+Almost any real world count data is subject to the possibility of over-dispersion.
+:::
+:::
+
+## Causes
+
+- Increased variability of counts
+- Increased number of 0
+- Un-accounted covariates
 
 ## Candidate Distributions
 
 1. Negative-Binomial
-2. Poisson-Lindley
+2. Double Poisson
 3. Generalized Poisson
 4. Conway-Maxwell-Poisson (CMP)
+
+- Zero inflated disitributions
+    - ZIP
+    - ZINB
+    - ZIDP/ZIGP
+    
+    
+::::{.columns}
+:::{.column width="50%"}
+
+```{r}
+#| fig-width: 5
+#| fig-height: 2.5
+
+set.seed(7)
+
+nb_data <- rnbinom(1000, 100, .3)
+
+vals <- seq(min(nb_data), max(nb_data))
+pois_est <- tibble(x = vals, y = dpois(x, mean(nb_data)))
+
+tibble(x = nb_data) |> 
+  ggplot(aes(x)) + 
+  geom_histogram(aes(y = after_stat(density))) +
+  geom_line(data = pois_est, aes(x = x, y = y)) +
+  geom_density(color = "blue") +
+  labs(
+    title = "Negative-Binomial data with fitted Poisson model"
+  )
+```
+:::
+
+:::{.column width="50%"}
+
+```{r}
+#| fig-width: 5
+#| fig-height: 2.5
+
+
+pois_data <- rpois(1000, 6)
+zip_data <- c(pois_data, rep(0, 1000))
+
+N <- max(pois_data) + 1
+
+tibble(x = zip_data) |> 
+  ggplot(aes(x)) +
+  geom_histogram(aes(y = after_stat(density))) +
+  geom_density(color = "blue") +
+  geom_function(fun = dpois, args = list(lambda = mean(zip_data)), n = N) +
+  labs(
+    title = "Zero inflated Poisson data with fitted Poisson model"
+  )
+```
+:::
+::::
 
 ## Negative-Binomial
 
@@ -47,9 +133,10 @@ Poisson regression is the most popular method for modeling count data. The Poiss
 
 [^1]: The classic negative-binomial is parameterized as number of success and probability of success, $r$ and $p$.
 
-## Poisson-Lindley
+## Double Poisson
 
 - Parameters: $\lambda$, $\theta$
+- variance: $\lambda / \theta$
 
 ## Generalized Poisson
 
@@ -58,6 +145,10 @@ Poisson regression is the most popular method for modeling count data. The Poiss
 ## Conway-Maxwell Poisson (CMP)
 
 - Parameters: $\lambda$, $\nu$
+- Weighted Poison distribution with pmf:
+$$
+f(Y = y) = \frac{\lambda^y}{(y!)^\nu Z(\lambda, \nu)}
+$$
 
 ## Model comparisons
 

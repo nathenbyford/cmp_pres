@@ -1,0 +1,647 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{part title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{part title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\usetheme[]{AnnArbor}
+\ifPDFTeX\else  
+    % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\newif\ifbibliography
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+\usepackage{caption}
+% Make caption package work with longtable
+\makeatletter
+\def\fnum@table{\tablename~\thetable}
+\makeatother
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+\usepackage{fontspec}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{colortbl}
+\usepackage{hhline}
+\newlength\Oldarrayrulewidth
+\newlength\Oldtabcolsep
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{wrapfig}
+\makeatletter
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
+\makeatother
+\makeatletter
+\@ifundefined{shadecolor}{\definecolor{shadecolor}{rgb}{.97, .97, .97}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\makeatother
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Generalized Linear Models},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Generalized Linear Models}
+\subtitle{For Over-Dispersed Data}
+\author{}
+\date{}
+
+\begin{document}
+\frame{\titlepage}
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, breakable, borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt, interior hidden, sharp corners, enhanced]}{\end{tcolorbox}}\fi
+
+\begin{frame}{Basics of Generalized Linear Models (GLMs)}
+\protect\hypertarget{basics-of-generalized-linear-models-glms}{}
+\begin{itemize}
+\tightlist
+\item
+  GLMs are a flexible generalization of ordinary linear regression that
+  allows for response variables that have error distribution models
+  other than a normal distribution.
+\item
+  \textbf{Components of GLMs}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Random Component}: Specifies the distribution of the
+    response variable (e.g., Normal, Binomial, Poisson).
+  \item
+    \textbf{Systematic Component}: A linear predictor, a combination of
+    explanatory variables (predictors).
+  \item
+    \textbf{Link Function}: Connects the mean of the response variable
+    to the linear predictor (e.g., identity, log, logit).
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Common link functions and GLMS}
+\protect\hypertarget{common-link-functions-and-glms}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Identity Link}: Used for normally distributed data (linear
+  regression).
+\item
+  \textbf{Logit Link}: Used for binary outcome data (logistic
+  regression).
+\item
+  \textbf{Log Link}: Used for count data (Poisson regression).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Over-Dispersed Data}
+\protect\hypertarget{over-dispersed-data}{}
+\begin{itemize}
+\tightlist
+\item
+  Over-dispersion in general refers to having variance greater than that
+  assumed for the theoretical data model.\\
+\item
+  Over-dispersion can also refer to having a variance that is greater
+  than the mean
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Similarly equi-dispersion would refer to having variance equal to
+    the mean.
+  \end{itemize}
+\end{itemize}
+
+\begin{alertblock}{Poisson regression}
+\protect\hypertarget{poisson-regression}{}
+Poisson regression is the most popular method for modeling count data.
+The Poisson distribution brings with it the assumption of
+equi-dispersion that is often unsatisfied.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Common applicataions}
+\protect\hypertarget{common-applicataions}{}
+\begin{columns}[T]
+\begin{column}{0.5\textwidth}
+\begin{itemize}
+\tightlist
+\item
+  Count data in Biology
+\item
+  Epidemiology
+\item
+  Finance
+\item
+  Insurance claims
+\item
+  Environmental studies
+\item
+  etc.
+\end{itemize}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\textwidth,height=\textheight]{daily_stock_trades.png}
+
+}
+
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.5\textwidth,height=\textheight]{woodlark.png}
+
+}
+
+\end{figure}
+\end{column}
+\end{columns}
+
+Almost any real world count data is subject to the possibility of
+over-dispersion.
+\end{frame}
+
+\begin{frame}{Causes}
+\protect\hypertarget{causes}{}
+\begin{columns}[T]
+\begin{column}{0.5\textwidth}
+\begin{itemize}
+\tightlist
+\item
+  Increased variability of counts
+\item
+  Event clustering
+\item
+  Increased number of 0
+\item
+  Interaction effects
+\item
+  Measurement error
+\item
+  Environmental effects
+\end{itemize}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\includegraphics{topographic.png}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Candidate Distributions}
+\protect\hypertarget{candidate-distributions}{}
+\begin{enumerate}
+\tightlist
+\item
+  Negative-Binomial
+\item
+  Generalized Poisson
+\item
+  Double Poisson
+\item
+  Conway-Maxwell-Poisson (CMP)
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Zero inflated disitributions
+
+  \begin{itemize}
+  \tightlist
+  \item
+    ZIP
+  \item
+    ZINB
+  \item
+    ZIDP/ZIGP
+  \end{itemize}
+\end{itemize}
+
+\begin{columns}[T]
+\begin{column}{0.5\textwidth}
+\includegraphics{cmp_pres_files/figure-beamer/unnamed-chunk-2-1.pdf}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\includegraphics{cmp_pres_files/figure-beamer/unnamed-chunk-3-1.pdf}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Negative-Binomial}
+\protect\hypertarget{negative-binomial}{}
+\begin{itemize}
+\tightlist
+\item
+  Parameters: mean: \(\mu\), dispersion: \(k\)\footnote<.->{The classic
+    negative-binomial is parameterized as number of success and
+    probability of success, \(r\) and \(p\).}
+\item
+  Variance: \(\mu + \mu^2/k\)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Function of mean and dispersion parameter
+  \item
+    Clearly captures over-dispersion.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Generalized Poisson}
+\protect\hypertarget{generalized-poisson}{}
+\begin{itemize}
+\tightlist
+\item
+  Parameters: \(\lambda\), \(\theta\)
+\item
+  Mean: \(\lambda / (1- \theta)\)
+\item
+  Variance: \(\lambda / (1- \theta)^3\)
+\end{itemize}
+
+\[
+f(Y = y) = \frac{\lambda(\lambda + \theta y)^{y-1} e^{-(\lambda + \theta y)}}{y!}, \quad \lambda > 0,\space \theta \in \mathbb{R}
+\]
+
+\begin{itemize}
+\tightlist
+\item
+  Designed to extend to overdispersed and underdispersed count data
+\end{itemize}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+\(\theta = 0\) & \(\theta > 0\) & \(\theta < 0\) \\
+\midrule\noalign{}
+\endhead
+reduces to Poisson & Models overdispersion & Models underdispersion \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}{Double Poisson}
+\protect\hypertarget{double-poisson}{}
+\begin{itemize}
+\tightlist
+\item
+  Parameters: \(\mu\), \(\theta\)
+\item
+  variance: \(\mu / \theta\)
+\item
+  Extension of the double exponential family (Efron 1986) defined by pmf
+  \[
+  f(Y = y) = (\theta^{1/2}e^{-\theta\mu}) \left(\frac{e^{y}y^y}{y!}\right) \left(\frac{e \mu}{y}\right)^{\theta y}
+  \]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Conway-Maxwell Poisson (CMP)}
+\protect\hypertarget{conway-maxwell-poisson-cmp}{}
+\begin{itemize}
+\tightlist
+\item
+  Parameters: \(\lambda\), \(\nu\)
+\item
+  Weighted Poison distribution with pmf: \[
+  f(Y = y) = \frac{\lambda^y}{(y!)^\nu Z(\lambda, \nu)}, \quad Z(\lambda, \nu) = \sum_{y=0}^\infty \frac{\lambda^y}{(y!)^\nu}
+  \]
+\item
+  Includes spacial cases of Poison\((\lambda)\) when \(\nu = 1\),
+  geometric\((\lambda)\)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Model comparisons}
+\protect\hypertarget{model-comparisons}{}
+\begin{itemize}
+\tightlist
+\item
+  2008 Bayesian paper compares the Generalized Poisson distribution,
+\end{itemize}
+
+\global\setlength{\Oldarrayrulewidth}{\arrayrulewidth}
+
+\global\setlength{\Oldtabcolsep}{\tabcolsep}
+
+\setlength{\tabcolsep}{2pt}
+
+\renewcommand*{\arraystretch}{1.5}
+
+
+
+\providecommand{\ascline}[3]{\noalign{\global\arrayrulewidth #1}\arrayrulecolor[HTML]{#2}\cline{#3}}
+
+\begin{longtable*}[c]{|p{0.75in}|p{0.75in}|p{0.75in}|p{0.75in}}
+
+
+
+\ascline{1.5pt}{666666}{1-4}
+
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{Model}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{Poisson}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{NB}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{GP}}}} \\
+
+\ascline{1.5pt}{666666}{1-4}\endfirsthead 
+
+\ascline{1.5pt}{666666}{1-4}
+
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{Model}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{Poisson}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{NB}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{GP}}}} \\
+
+\ascline{1.5pt}{666666}{1-4}\endhead
+
+
+
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{DIC}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{1,291.8}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{1,273.9}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{1,265.6}}}} \\
+
+\ascline{1.5pt}{666666}{1-4}
+
+
+
+\end{longtable*}
+
+
+
+\arrayrulecolor[HTML]{000000}
+
+\global\setlength{\arrayrulewidth}{\Oldarrayrulewidth}
+
+\global\setlength{\tabcolsep}{\Oldtabcolsep}
+
+\renewcommand*{\arraystretch}{1}
+
+\begin{itemize}
+\tightlist
+\item
+  Bayesian paper compared Poisson, Negative Binomial, and CMP for
+  longitudinal counts using DIC to compare. (Alam et al.)
+\end{itemize}
+
+\global\setlength{\Oldarrayrulewidth}{\arrayrulewidth}
+
+\global\setlength{\Oldtabcolsep}{\tabcolsep}
+
+\setlength{\tabcolsep}{2pt}
+
+\renewcommand*{\arraystretch}{1.5}
+
+
+
+\providecommand{\ascline}[3]{\noalign{\global\arrayrulewidth #1}\arrayrulecolor[HTML]{#2}\cline{#3}}
+
+\begin{longtable*}[c]{|p{0.75in}|p{0.75in}|p{0.75in}|p{0.75in}}
+
+
+
+\ascline{1.5pt}{666666}{1-4}
+
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{Model}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{Poisson}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{NB}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{CMP}}}} \\
+
+\ascline{1.5pt}{666666}{1-4}\endfirsthead 
+
+\ascline{1.5pt}{666666}{1-4}
+
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{Model}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{Poisson}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{NB}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{CMP}}}} \\
+
+\ascline{1.5pt}{666666}{1-4}\endhead
+
+
+
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{DIC}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{1,362.39}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{1,350.67}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{1,348.87}}}} \\
+
+\ascline{1.5pt}{666666}{1-4}
+
+
+
+\end{longtable*}
+
+
+
+\arrayrulecolor[HTML]{000000}
+
+\global\setlength{\arrayrulewidth}{\Oldarrayrulewidth}
+
+\global\setlength{\tabcolsep}{\Oldtabcolsep}
+
+\renewcommand*{\arraystretch}{1}
+
+\begin{itemize}
+\tightlist
+\item
+  Another Bayesian paper compared using AIC and shows the following
+  results (Sellers and Shmueli)
+\end{itemize}
+
+\global\setlength{\Oldarrayrulewidth}{\arrayrulewidth}
+
+\global\setlength{\Oldtabcolsep}{\tabcolsep}
+
+\setlength{\tabcolsep}{2pt}
+
+\renewcommand*{\arraystretch}{1.5}
+
+
+
+\providecommand{\ascline}[3]{\noalign{\global\arrayrulewidth #1}\arrayrulecolor[HTML]{#2}\cline{#3}}
+
+\begin{longtable*}[c]{|p{0.75in}|p{0.75in}|p{0.75in}|p{0.75in}}
+
+
+
+\ascline{1.5pt}{666666}{1-4}
+
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{Model}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{CMP}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{Poisson}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{Neg-Bin}}}} \\
+
+\ascline{1.5pt}{666666}{1-4}\endfirsthead 
+
+\ascline{1.5pt}{666666}{1-4}
+
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{Model}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{CMP}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{Poisson}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{Neg-Bin}}}} \\
+
+\ascline{1.5pt}{666666}{1-4}\endhead
+
+
+
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{AIC}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{5,073}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{5,589}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{Arial}{5,077}}}} \\
+
+\ascline{1.5pt}{666666}{1-4}
+
+
+
+\end{longtable*}
+
+
+
+\arrayrulecolor[HTML]{000000}
+
+\global\setlength{\arrayrulewidth}{\Oldarrayrulewidth}
+
+\global\setlength{\tabcolsep}{\Oldtabcolsep}
+
+\renewcommand*{\arraystretch}{1}
+\end{frame}
+
+\begin{frame}{Results}
+\protect\hypertarget{results}{}
+\begin{itemize}
+\tightlist
+\item
+  It has been found and shown that modeling over-dispersed data with
+  impropper distributions leads to biased results.
+\item
+  To prevent biased results from over dispersed data, using models such
+  as the CMP, GP, or DP model can prove benneficial
+\item
+  Overall the CMP is found to have the most flexability modeling of
+  over- and under-dispersion due to the GP model truncating for some
+  dispersion parameters
+\end{itemize}
+\end{frame}
+
+\begin{frame}{References}
+\protect\hypertarget{references}{}
+\end{frame}
+
+
+
+\end{document}

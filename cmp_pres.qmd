@@ -6,6 +6,9 @@ format:
     author: 'Nathen Byford'
     footer: 'Nathen Byford'
     controls: auto
+  beamer:
+    theme: AnnArbor
+    keep-tex: true
 ---
 
 ```{r}
@@ -15,9 +18,20 @@ library(tidyverse); theme_set(theme_bw())
 library(flextable)
 ```
 
-## Generalized Linear Models (GLMs)
+## Basics of Generalized Linear Models (GLMs)
 
-In statistics, a generalized linear model (GLM) is a flexible generalization of ordinary linear regression. The GLM generalizes linear regression by allowing the linear model to be related to the response variable via a link function and by allowing the magnitude of the variance of each measurement to be a function of its predicted value.
+- GLMs are a flexible generalization of ordinary linear regression that allows for response variables that have error distribution models other than a normal distribution.
+- **Components of GLMs**:
+  - **Random Component**: Specifies the distribution of the response variable (e.g., Normal, Binomial, Poisson).
+  - **Systematic Component**: A linear predictor, a combination of explanatory variables (predictors).
+  - **Link Function**: Connects the mean of the response variable to the linear predictor (e.g., identity, log, logit).
+
+## Common link functions and GLMS
+
+- **Identity Link**: Used for normally distributed data (linear regression).
+- **Logit Link**: Used for binary outcome data (logistic regression).
+- **Log Link**: Used for count data (Poisson regression).
+
 
 ## Over-Dispersed Data
 - Over-dispersion in general refers to having variance greater than that assumed for the theoretical data model.  
@@ -58,18 +72,26 @@ Almost any real world count data is subject to the possibility of over-dispersio
 
 ## Causes
 
+::::{.columns}
+:::{.column width="50%"}
 - Increased variability of counts
 - Event clustering
 - Increased number of 0
 - Interaction effects
 - Measurement error
 - Environmental effects
+:::
+
+:::{.column width="50%"}
+![](topographic.png)
+:::
+::::
 
 ## Candidate Distributions
 
 1. Negative-Binomial
-2. Double Poisson
-3. Generalized Poisson
+2. Generalized Poisson
+3. Double Poisson
 4. Conway-Maxwell-Poisson (CMP)
 
 - Zero inflated disitributions
@@ -136,22 +158,43 @@ tibble(x = zip_data) |>
 
 [^1]: The classic negative-binomial is parameterized as number of success and probability of success, $r$ and $p$.
 
-## Double Poisson
-
-- Parameters: $\lambda$, $\theta$
-- variance: $\lambda / \theta$
 
 ## Generalized Poisson
 
-- Parameters: $\lambda$, $\alpha$
+- Parameters: $\lambda$, $\theta$
+- Mean: $\lambda / (1- \theta)$
+- Variance: $\lambda / (1- \theta)^3$
+
+$$
+f(Y = y) = \frac{\lambda(\lambda + \theta y)^{y-1} e^{-(\lambda + \theta y)}}{y!}, \quad \lambda > 0,\space \theta \in \mathbb{R}
+$$
+
+- Designed to extend to overdispersed and underdispersed count data
+
+:::{.smalltext}
+| $\theta = 0$ | $\theta > 0$ | $\theta < 0$ |
+|:-------------|:-------------|:-------------|
+| reduces to Poisson | Models overdispersion | Models underdispersion |
+:::
+
+## Double Poisson
+
+- Parameters: $\mu$, $\theta$
+- variance: $\mu / \theta$
+- Extension of the double exponential family (Efron 1986) defined by pmf
+$$
+f(Y = y) = (\theta^{1/2}e^{-\theta\mu}) \left(\frac{e^{y}y^y}{y!}\right) \left(\frac{e \mu}{y}\right)^{\theta y}
+$$
+
 
 ## Conway-Maxwell Poisson (CMP)
 
 - Parameters: $\lambda$, $\nu$
 - Weighted Poison distribution with pmf:
 $$
-f(Y = y) = \frac{\lambda^y}{(y!)^\nu Z(\lambda, \nu)}
+f(Y = y) = \frac{\lambda^y}{(y!)^\nu Z(\lambda, \nu)}, \quad Z(\lambda, \nu) = \sum_{y=0}^\infty \frac{\lambda^y}{(y!)^\nu}
 $$
+- Includes spacial cases of Poison$(\lambda)$ when $\nu = 1$, geometric$(\lambda)$
 
 ## Model comparisons
 
@@ -184,3 +227,13 @@ tribble(
 ) |>
   flextable()
 ```
+
+## Results
+
+- It has been found and shown that modeling over-dispersed data with impropper distributions leads to biased results.
+- To prevent biased results from over dispersed data, using models such as the CMP, GP, or DP model can prove benneficial
+- Overall the CMP is found to have the most flexability modeling of over- and under-dispersion due to the GP model truncating for some dispersion parameters
+
+
+## References
+

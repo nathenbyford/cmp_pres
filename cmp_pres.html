@@ -355,9 +355,25 @@ Nathen Byford
 </div>
 
 </section>
-<section id="generalized-linear-models-glms" class="slide level2">
-<h2>Generalized Linear Models (GLMs)</h2>
-<p>In statistics, a generalized linear model (GLM) is a flexible generalization of ordinary linear regression. The GLM generalizes linear regression by allowing the linear model to be related to the response variable via a link function and by allowing the magnitude of the variance of each measurement to be a function of its predicted value.</p>
+<section id="basics-of-generalized-linear-models-glms" class="slide level2">
+<h2>Basics of Generalized Linear Models (GLMs)</h2>
+<ul>
+<li>GLMs are a flexible generalization of ordinary linear regression that allows for response variables that have error distribution models other than a normal distribution.</li>
+<li><strong>Components of GLMs</strong>:
+<ul>
+<li><strong>Random Component</strong>: Specifies the distribution of the response variable (e.g., Normal, Binomial, Poisson).</li>
+<li><strong>Systematic Component</strong>: A linear predictor, a combination of explanatory variables (predictors).</li>
+<li><strong>Link Function</strong>: Connects the mean of the response variable to the linear predictor (e.g., identity, log, logit).</li>
+</ul></li>
+</ul>
+</section>
+<section id="common-link-functions-and-glms" class="slide level2">
+<h2>Common link functions and GLMS</h2>
+<ul>
+<li><strong>Identity Link</strong>: Used for normally distributed data (linear regression).</li>
+<li><strong>Logit Link</strong>: Used for binary outcome data (logistic regression).</li>
+<li><strong>Log Link</strong>: Used for count data (Poisson regression).</li>
+</ul>
 </section>
 <section id="over-dispersed-data" class="slide level2">
 <h2>Over-Dispersed Data</h2>
@@ -413,21 +429,27 @@ Nathen Byford
 </section>
 <section id="causes" class="slide level2">
 <h2>Causes</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
 <li>Increased variability of counts</li>
 <li>Event clustering</li>
 <li>Increased number of 0</li>
-<li>Ineraction effects</li>
+<li>Interaction effects</li>
 <li>Measurement error</li>
 <li>Environmental effects</li>
 </ul>
+</div><div class="column" style="width:50%;">
+<p><img data-src="topographic.png"></p>
+</div>
+</div>
 </section>
 <section id="candidate-distributions" class="slide level2">
 <h2>Candidate Distributions</h2>
 <ol type="1">
 <li>Negative-Binomial</li>
-<li>Double Poisson</li>
 <li>Generalized Poisson</li>
+<li>Double Poisson</li>
 <li>Conway-Maxwell-Poisson (CMP)</li>
 </ol>
 <ul>
@@ -465,17 +487,46 @@ Nathen Byford
 </ul></li>
 </ul>
 <aside><ol class="aside-footnotes"><li id="fn1"><p>The classic negative-binomial is parameterized as number of success and probability of success, <span class="math inline">\(r\)</span> and <span class="math inline">\(p\)</span>.</p></li></ol></aside></section>
-<section id="double-poisson" class="slide level2">
-<h2>Double Poisson</h2>
-<ul>
-<li>Parameters: <span class="math inline">\(\lambda\)</span>, <span class="math inline">\(\theta\)</span></li>
-<li>variance: <span class="math inline">\(\lambda / \theta\)</span></li>
-</ul>
-</section>
 <section id="generalized-poisson" class="slide level2">
 <h2>Generalized Poisson</h2>
 <ul>
-<li>Parameters: <span class="math inline">\(\lambda\)</span>, <span class="math inline">\(\alpha\)</span></li>
+<li>Parameters: <span class="math inline">\(\lambda\)</span>, <span class="math inline">\(\theta\)</span></li>
+<li>Mean: <span class="math inline">\(\lambda / (1- \theta)\)</span></li>
+<li>Variance: <span class="math inline">\(\lambda / (1- \theta)^3\)</span></li>
+</ul>
+<p><span class="math display">\[
+f(Y = y) = \frac{\lambda(\lambda + \theta y)^{y-1} e^{-(\lambda + \theta y)}}{y!}, \quad \lambda &gt; 0,\space \theta \in \mathbb{R}
+\]</span></p>
+<ul>
+<li>Designed to extend to overdispersed and underdispersed count data</li>
+</ul>
+<div class="smalltext">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><span class="math inline">\(\theta = 0\)</span></th>
+<th style="text-align: left;"><span class="math inline">\(\theta &gt; 0\)</span></th>
+<th style="text-align: left;"><span class="math inline">\(\theta &lt; 0\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">reduces to Poisson</td>
+<td style="text-align: left;">Models overdispersion</td>
+<td style="text-align: left;">Models underdispersion</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="double-poisson" class="slide level2">
+<h2>Double Poisson</h2>
+<ul>
+<li>Parameters: <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\theta\)</span></li>
+<li>variance: <span class="math inline">\(\mu / \theta\)</span></li>
+<li>Extension of the double exponential family (Efron 1986) defined by pmf <span class="math display">\[
+f(Y = y) = (\theta^{1/2}e^{-\theta\mu}) \left(\frac{e^{y}y^y}{y!}\right) \left(\frac{e \mu}{y}\right)^{\theta y}
+\]</span></li>
 </ul>
 </section>
 <section id="conway-maxwell-poisson-cmp" class="slide level2">
@@ -483,8 +534,9 @@ Nathen Byford
 <ul>
 <li>Parameters: <span class="math inline">\(\lambda\)</span>, <span class="math inline">\(\nu\)</span></li>
 <li>Weighted Poison distribution with pmf: <span class="math display">\[
-f(Y = y) = \frac{\lambda^y}{(y!)^\nu Z(\lambda, \nu)}
+f(Y = y) = \frac{\lambda^y}{(y!)^\nu Z(\lambda, \nu)}, \quad Z(\lambda, \nu) = \sum_{y=0}^\infty \frac{\lambda^y}{(y!)^\nu}
 \]</span></li>
+<li>Includes spacial cases of Poison<span class="math inline">\((\lambda)\)</span> when <span class="math inline">\(\nu = 1\)</span>, geometric<span class="math inline">\((\lambda)\)</span></li>
 </ul>
 </section>
 <section id="model-comparisons" class="slide level2">
@@ -495,7 +547,7 @@ f(Y = y) = \frac{\lambda^y}{(y!)^\nu Z(\lambda, \nu)}
 <div class="cell">
 <div class="cell-output-display">
 
-<div class="tabwid"><style>.cl-f435aeda{}.cl-f42e3b6e{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-f431610e{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-f4316118{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-f43171ee{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f43171ef{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f43171f8{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f43171f9{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-f435aeda"><thead><tr style="overflow-wrap:break-word;"><th class="cl-f43171ee"><p class="cl-f431610e"><span class="cl-f42e3b6e">Model</span></p></th><th class="cl-f43171ef"><p class="cl-f4316118"><span class="cl-f42e3b6e">Poisson</span></p></th><th class="cl-f43171ef"><p class="cl-f4316118"><span class="cl-f42e3b6e">NB</span></p></th><th class="cl-f43171ef"><p class="cl-f4316118"><span class="cl-f42e3b6e">GP</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-f43171f8"><p class="cl-f431610e"><span class="cl-f42e3b6e">DIC</span></p></td><td class="cl-f43171f9"><p class="cl-f4316118"><span class="cl-f42e3b6e">1,291.8</span></p></td><td class="cl-f43171f9"><p class="cl-f4316118"><span class="cl-f42e3b6e">1,273.9</span></p></td><td class="cl-f43171f9"><p class="cl-f4316118"><span class="cl-f42e3b6e">1,265.6</span></p></td></tr></tbody></table></div>
+<div class="tabwid"><style>.cl-ec240dbe{}.cl-ec1d6edc{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-ec1fbbc4{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-ec1fbbce{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-ec1fcb50{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ec1fcb51{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ec1fcb52{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ec1fcb5a{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-ec240dbe"><thead><tr style="overflow-wrap:break-word;"><th class="cl-ec1fcb50"><p class="cl-ec1fbbc4"><span class="cl-ec1d6edc">Model</span></p></th><th class="cl-ec1fcb51"><p class="cl-ec1fbbce"><span class="cl-ec1d6edc">Poisson</span></p></th><th class="cl-ec1fcb51"><p class="cl-ec1fbbce"><span class="cl-ec1d6edc">NB</span></p></th><th class="cl-ec1fcb51"><p class="cl-ec1fbbce"><span class="cl-ec1d6edc">GP</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-ec1fcb52"><p class="cl-ec1fbbc4"><span class="cl-ec1d6edc">DIC</span></p></td><td class="cl-ec1fcb5a"><p class="cl-ec1fbbce"><span class="cl-ec1d6edc">1,291.8</span></p></td><td class="cl-ec1fcb5a"><p class="cl-ec1fbbce"><span class="cl-ec1d6edc">1,273.9</span></p></td><td class="cl-ec1fcb5a"><p class="cl-ec1fbbce"><span class="cl-ec1d6edc">1,265.6</span></p></td></tr></tbody></table></div>
 </div>
 </div>
 <ul>
@@ -504,7 +556,7 @@ f(Y = y) = \frac{\lambda^y}{(y!)^\nu Z(\lambda, \nu)}
 <div class="cell">
 <div class="cell-output-display">
 
-<div class="tabwid"><style>.cl-f4470856{}.cl-f4409ce6{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-f442e000{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-f442e00a{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-f442eef6{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f442eef7{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f442ef00{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f442ef01{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-f4470856"><thead><tr style="overflow-wrap:break-word;"><th class="cl-f442eef6"><p class="cl-f442e000"><span class="cl-f4409ce6">Model</span></p></th><th class="cl-f442eef7"><p class="cl-f442e00a"><span class="cl-f4409ce6">Poisson</span></p></th><th class="cl-f442eef7"><p class="cl-f442e00a"><span class="cl-f4409ce6">NB</span></p></th><th class="cl-f442eef7"><p class="cl-f442e00a"><span class="cl-f4409ce6">CMP</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-f442ef00"><p class="cl-f442e000"><span class="cl-f4409ce6">DIC</span></p></td><td class="cl-f442ef01"><p class="cl-f442e00a"><span class="cl-f4409ce6">1,362.39</span></p></td><td class="cl-f442ef01"><p class="cl-f442e00a"><span class="cl-f4409ce6">1,350.67</span></p></td><td class="cl-f442ef01"><p class="cl-f442e00a"><span class="cl-f4409ce6">1,348.87</span></p></td></tr></tbody></table></div>
+<div class="tabwid"><style>.cl-ec34ba06{}.cl-ec2dca7a{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-ec2ff638{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-ec2ff66a{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-ec3004b6{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ec3004b7{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ec3004b8{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ec3004c0{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-ec34ba06"><thead><tr style="overflow-wrap:break-word;"><th class="cl-ec3004b6"><p class="cl-ec2ff638"><span class="cl-ec2dca7a">Model</span></p></th><th class="cl-ec3004b7"><p class="cl-ec2ff66a"><span class="cl-ec2dca7a">Poisson</span></p></th><th class="cl-ec3004b7"><p class="cl-ec2ff66a"><span class="cl-ec2dca7a">NB</span></p></th><th class="cl-ec3004b7"><p class="cl-ec2ff66a"><span class="cl-ec2dca7a">CMP</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-ec3004b8"><p class="cl-ec2ff638"><span class="cl-ec2dca7a">DIC</span></p></td><td class="cl-ec3004c0"><p class="cl-ec2ff66a"><span class="cl-ec2dca7a">1,362.39</span></p></td><td class="cl-ec3004c0"><p class="cl-ec2ff66a"><span class="cl-ec2dca7a">1,350.67</span></p></td><td class="cl-ec3004c0"><p class="cl-ec2ff66a"><span class="cl-ec2dca7a">1,348.87</span></p></td></tr></tbody></table></div>
 </div>
 </div>
 <ul>
@@ -513,9 +565,20 @@ f(Y = y) = \frac{\lambda^y}{(y!)^\nu Z(\lambda, \nu)}
 <div class="cell">
 <div class="cell-output-display">
 
-<div class="tabwid"><style>.cl-f454be2e{}.cl-f44f1820{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-f4514e74{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-f4514e7e{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-f4515b44{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f4515b4e{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f4515b4f{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f4515b58{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-f454be2e"><thead><tr style="overflow-wrap:break-word;"><th class="cl-f4515b44"><p class="cl-f4514e74"><span class="cl-f44f1820">Model</span></p></th><th class="cl-f4515b4e"><p class="cl-f4514e7e"><span class="cl-f44f1820">CMP</span></p></th><th class="cl-f4515b4e"><p class="cl-f4514e7e"><span class="cl-f44f1820">Poisson</span></p></th><th class="cl-f4515b4e"><p class="cl-f4514e7e"><span class="cl-f44f1820">Neg-Bin</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-f4515b4f"><p class="cl-f4514e74"><span class="cl-f44f1820">AIC</span></p></td><td class="cl-f4515b58"><p class="cl-f4514e7e"><span class="cl-f44f1820">5,073</span></p></td><td class="cl-f4515b58"><p class="cl-f4514e7e"><span class="cl-f44f1820">5,589</span></p></td><td class="cl-f4515b58"><p class="cl-f4514e7e"><span class="cl-f44f1820">5,077</span></p></td></tr></tbody></table></div>
+<div class="tabwid"><style>.cl-ec42e4dc{}.cl-ec3cf892{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-ec3f1640{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-ec3f164a{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-ec3f250e{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ec3f2522{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ec3f252c{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-ec3f252d{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-ec42e4dc"><thead><tr style="overflow-wrap:break-word;"><th class="cl-ec3f250e"><p class="cl-ec3f1640"><span class="cl-ec3cf892">Model</span></p></th><th class="cl-ec3f2522"><p class="cl-ec3f164a"><span class="cl-ec3cf892">CMP</span></p></th><th class="cl-ec3f2522"><p class="cl-ec3f164a"><span class="cl-ec3cf892">Poisson</span></p></th><th class="cl-ec3f2522"><p class="cl-ec3f164a"><span class="cl-ec3cf892">Neg-Bin</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-ec3f252c"><p class="cl-ec3f1640"><span class="cl-ec3cf892">AIC</span></p></td><td class="cl-ec3f252d"><p class="cl-ec3f164a"><span class="cl-ec3cf892">5,073</span></p></td><td class="cl-ec3f252d"><p class="cl-ec3f164a"><span class="cl-ec3cf892">5,589</span></p></td><td class="cl-ec3f252d"><p class="cl-ec3f164a"><span class="cl-ec3cf892">5,077</span></p></td></tr></tbody></table></div>
 </div>
 </div>
+</section>
+<section id="results" class="slide level2">
+<h2>Results</h2>
+<ul>
+<li>It has been found and shown that modeling over-dispersed data with impropper distributions leads to biased results.</li>
+<li>To prevent biased results from over dispersed data, using models such as the CMP, GP, or DP model can prove benneficial</li>
+<li>Overall the CMP is found to have the most flexability modeling of over- and under-dispersion due to the GP model truncating for some dispersion parameters</li>
+</ul>
+</section>
+<section id="references" class="slide level2">
+<h2>References</h2>
 
 <img src="_extensions/nathenbyford/baylor_theme/logo.png" class="slide-logo r-stretch"><div class="footer footer-default">
 <p>Nathen Byford</p>

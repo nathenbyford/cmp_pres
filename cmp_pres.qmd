@@ -6,9 +6,7 @@ format:
     author: 'Nathen Byford'
     footer: 'Nathen Byford'
     controls: auto
-  beamer:
-    theme: AnnArbor
-    keep-tex: true
+    embed-resources: true
 ---
 
 ```{r}

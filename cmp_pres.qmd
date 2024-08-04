@@ -229,8 +229,8 @@ tribble(
 ## Results
 
 - It has been found and shown that modeling over-dispersed data with impropper distributions leads to biased results.
-- To prevent biased results from over dispersed data, using models such as the CMP, GP, or DP model can prove benneficial
-- Overall the CMP is found to have the most flexability modeling of over- and under-dispersion due to the GP model truncating for some dispersion parameters
+- To prevent biased results from over dispersed data, using models such as the CMP, GP, or DP model can prove beneficial
+- Overall the CMP is found to have the most flexibility modeling of over- and under-dispersion due to the GP model truncating for some dispersion parameters
 
 
 ## References

@@ -6,7 +6,6 @@ format:
     author: 'Nathen Byford'
     footer: 'Nathen Byford'
     controls: auto
-    embed-resources: true
 bibliography: texts.bib
 csl: https://www.zotero.org/styles/american-statistical-association
 ---
@@ -37,12 +36,12 @@ library(flextable)
 ## Over-Dispersed Data
 - Over-dispersion in general refers to having variance greater than that assumed for the theoretical data model.  
 - Over-dispersion can also refer to having a variance that is greater than the mean
-    - Similarly equi-dispersion would refer to having variance equal to the mean.
+    - Similarly equa-dispersion would refer to having variance equal to the mean.
 
 ::: {.callout-note icon=false}
 ### Poisson regression
 
-Poisson regression is the most popular method for modeling count data. The Poisson distribution brings with it the assumption of equi-dispersion that is often unsatisfied.
+Poisson regression is the most popular method for modeling count data. The Poisson distribution brings with it the assumption of equa-dispersion that is often unsatisfied.
 :::
 
 ## Common applicataions
@@ -90,12 +89,12 @@ Almost any real world count data is subject to the possibility of over-dispersio
 
 ## Candidate Distributions
 
-1. Negative-Binomial (Poisson-Gamma model)
+1. Negative-Binomial
 2. Generalized Poisson
 3. Double Poisson
 4. Conway-Maxwell-Poisson (CMP)
 
-- Zero inflated disitributions
+- Zero inflated distributions
     - ZIP
     - ZINB
     - ZIDP/ZIGP
@@ -163,52 +162,52 @@ tibble(x = zip_data) |>
 ## Generalized Poisson
 
 - Parameters: $\lambda$, $\theta$
-- Mean: $\lambda / (1- \theta)$
-- Variance: $\lambda / (1- \theta)^3$
-
+- Mean: $\lambda / (1- \theta) \quad$ Variance: $\lambda / (1- \theta)^3$
+- Model introduced by Consul 1989 as a way to modify the Poisson to handle over-dispersed and under-dispersed count data
+- Probability distribution function
 $$
-f(Y = y) = \frac{\lambda(\lambda + \theta y)^{y-1} e^{-(\lambda + \theta y)}}{y!}, \quad \lambda > 0,\space \theta \in \mathbb{R}
+Pr(Y = y) = \frac{\lambda(\lambda + \theta y)^{y-1} e^{-(\lambda + \theta y)}}{y!}, \quad \lambda > 0,\space \theta \in \mathbb{R}
 $$
 
-- Designed to extend to overdispersed and underdispersed count data
-
-:::{.smalltext}
-| $\theta = 0$ | $\theta > 0$ | $\theta < 0$ |
-|:-------------|:-------------|:-------------|
-| reduces to Poisson | Models overdispersion | Models underdispersion |
-:::
+![](gp_table.png){width="50%" fig-align="center"}
 
 ## Double Poisson
 
 - Parameters: $\mu$, $\theta$
-- variance: $\mu / \theta$
-- Extension of the double exponential family [@efron_double_1986] defined by pmf
+- Mean: $\mu \quad$ Variance: $\mu / \theta$[^2]
+- Extension of the double exponential family [@efron_double_1986] with approximate pmf
 $$
-f(Y = y) = (\theta^{1/2}e^{-\theta\mu}) \left(\frac{e^{y}y^y}{y!}\right) \left(\frac{e \mu}{y}\right)^{\theta y}
+Pr(Y = y) = (\theta^{1/2}e^{-\theta\mu}) \left(\frac{e^{y}y^y}{y!}\right) \left(\frac{e \mu}{y}\right)^{\theta y}
 $$
+- The exact double Poisson (DP) density includes a normalizing constant $\sum_{y=0}^{\infty} Pr(Y = y) \approx 1 + \frac{1 - \theta}{12\mu\theta}(1 + \frac{1}{\mu\theta})$
 
+[^2]: Over-dispersed for $(\theta < 1)$, under-dispersed for $(\theta > 1)$, Poisson$(\theta = 1)$
 
 ## Conway-Maxwell Poisson (CMP)
 
-- Parameters: $\lambda$, $\nu$
+- Parameters: $\lambda$, $\nu$[^3]
+- Mean: $\mu \approx \lambda + 1/2\nu - 1/2 \quad$ Variance: $\sigma^2 \approx \lambda / \nu$[^4]
 - Weighted Poison distribution with pmf:
 $$
-f(Y = y) = \frac{\lambda^y}{(y!)^\nu Z(\lambda, \nu)}, \quad Z(\lambda, \nu) = \sum_{y=0}^\infty \frac{\lambda^y}{(y!)^\nu}
+Pr(Y = y) = \frac{\lambda^y}{(y!)^\nu Z(\lambda, \nu)}, \quad Z(\lambda, \nu) = \sum_{y=0}^\infty \frac{\lambda^y}{(y!)^\nu}
 $$
-- Includes spacial cases [@sellers_com-poisson_2012] of Poison$(\lambda)$ when $\nu = 1$, geometric$(\lambda)$
-- Model can be implemented using R package `COMPoissonReg`
+- Includes spacial cases [@sellers_com-poisson_2012] of Poison when $\nu = 1$, geometric when $\nu \to 0$, and Bernoulli when $\nu \to \infty$
+
+[^3]: A mean parameterized CMP was introduced with better interpretation and computation [@huang_mean-parametrized_2017] 
+[^4]: Approximations only accurate under specific conditions $\lambda > 10^\nu$ or $\nu \le 1$ [@sellers_com-poisson_2012] 
 
 ## Zero Inflated Distributions
 
 - Zero inflated distributions are piece-wise distributions with components for 0s and non-0s
 - For example the zero inflated Poisson (ZIP) has pmf
 $$
-f(Y = y) = \cases{
+Pr(Y = y) = \cases{
   \pi + (1-\pi)e^{-\lambda} &\text{if } y = 0\\
   (1 - \pi)\frac{\lambda^y e^{-\lambda}}{y!} &\text{if } y = 1, 2, \ldots
 }
 $$
-- Zero inflated framework extends to other distributions to further capture over-dispersion
+- Zero inflated framework extends to other distributions to further capture over-dispersion and zero inflation
+- Models can be fit using the `zeroinfl()` function in the package `pscl`
 
 ## Model comparisons {.smaller}
 
@@ -244,7 +243,7 @@ tribble(
   flextable()
 ```
 
-## Further Comparison
+## Further Comparison {.smaller}
 
 - Another Bayesian paper compared using AIC and shows the following results [@sellers_flexible_2010]
 
@@ -256,16 +255,37 @@ tribble(
   flextable()
 ```
 
+- Mean parameterized CMP AIC and run time
+
+```{r}
+tribble(
+  ~Model, ~GP, ~"CMP(Mean-param)", ~CMP,
+  "AIC", 453.75, 440.82, 440.50,
+  "Run time (Sec)", 0.33, 8.5, 31.5
+) |> 
+  flextable() |> 
+  autofit()
+```
+
+- Zero inflated Poisson regression model comparison for occupational injuries [@wang_bivariate_2003]
+
+```{r}
+tribble(
+  ~Model, ~Poisson, ~ZIP,
+  "Log-Likelihood", -409.678, -397.704
+) |> 
+  flextable() |> 
+  autofit()
+```
 
 
 ## Results
 
-- It has been found and shown that modeling over-dispersed data with impropper distributions leads to biased results.
+- It has been found and shown that modeling over-dispersed data with improper distributions leads to biased results.
 - To prevent biased results from over dispersed data, using models such as the CMP, GP, or DP model can prove beneficial
-- Overall the CMP is found to have the most flexibility modeling of over- and under-dispersion due to the GP model truncating for some dispersion parameters
+- Zero inflated models have better fit when there are increased number of zeros observed and can easily be implemented
+- Some of these models are easy to implement such as the CMP and CMP(mean-parameterized) in packages `COMPoissonReg` and `mpcmp`
 
 
 ## References
 
-::: {#refs}
-:::

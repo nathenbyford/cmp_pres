@@ -6,6 +6,7 @@ format:
     author: 'Nathen Byford'
     footer: 'Nathen Byford'
     controls: auto
+    embed-resources: true
 bibliography: texts.bib
 csl: https://www.zotero.org/styles/american-statistical-association
 ---
@@ -174,7 +175,7 @@ $$
 ## Double Poisson
 
 - Parameters: $\mu$, $\theta$
-- Mean: $\mu \quad$ Variance: $\mu / \theta$[^2]
+- Mean: $\mu \quad$ Variance:[^2] $\mu / \theta$
 - Extension of the double exponential family [@efron_double_1986] with approximate pmf
 $$
 Pr(Y = y) = (\theta^{1/2}e^{-\theta\mu}) \left(\frac{e^{y}y^y}{y!}\right) \left(\frac{e \mu}{y}\right)^{\theta y}
@@ -185,8 +186,8 @@ $$
 
 ## Conway-Maxwell Poisson (CMP)
 
-- Parameters: $\lambda$, $\nu$[^3]
-- Mean: $\mu \approx \lambda + 1/2\nu - 1/2 \quad$ Variance: $\sigma^2 \approx \lambda / \nu$[^4]
+- Parameters:[^3] $\lambda$, $\nu$
+- Mean: $\mu \approx \lambda + 1/2\nu - 1/2 \quad$ Variance:[^4] $\sigma^2 \approx \lambda / \nu$
 - Weighted Poison distribution with pmf:
 $$
 Pr(Y = y) = \frac{\lambda^y}{(y!)^\nu Z(\lambda, \nu)}, \quad Z(\lambda, \nu) = \sum_{y=0}^\infty \frac{\lambda^y}{(y!)^\nu}

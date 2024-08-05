@@ -7,6 +7,8 @@ format:
     footer: 'Nathen Byford'
     controls: auto
     embed-resources: true
+bibliography: texts.bib
+csl: https://www.zotero.org/styles/american-statistical-association
 ---
 
 ```{r}
@@ -179,7 +181,7 @@ $$
 
 - Parameters: $\mu$, $\theta$
 - variance: $\mu / \theta$
-- Extension of the double exponential family (Efron 1986) defined by pmf
+- Extension of the double exponential family [@efron_double_1986] defined by pmf
 $$
 f(Y = y) = (\theta^{1/2}e^{-\theta\mu}) \left(\frac{e^{y}y^y}{y!}\right) \left(\frac{e \mu}{y}\right)^{\theta y}
 $$
@@ -192,11 +194,11 @@ $$
 $$
 f(Y = y) = \frac{\lambda^y}{(y!)^\nu Z(\lambda, \nu)}, \quad Z(\lambda, \nu) = \sum_{y=0}^\infty \frac{\lambda^y}{(y!)^\nu}
 $$
-- Includes spacial cases of Poison$(\lambda)$ when $\nu = 1$, geometric$(\lambda)$
+- Includes spacial cases [@sellers_com-poisson_2012] of Poison$(\lambda)$ when $\nu = 1$, geometric$(\lambda)$
 
-## Model comparisons
+## Model comparisons {.smaller}
 
-- 2008 Bayesian paper compares the Generalized Poisson distribution,
+- 2008 Bayesian paper compares the Generalized Poisson distribution, [@gschlosl_modelling_2008]
 
 ```{r}
 tribble(
@@ -206,7 +208,7 @@ tribble(
   flextable()
 ```
 
-- Bayesian paper compared Poisson, Negative Binomial, and CMP for longitudinal counts using DIC to compare. (Alam et al.)
+- Bayesian paper compared Poisson, Negative Binomial, and CMP for longitudinal counts using DIC to compare. [@alam_bayesian_2023]
 
 ```{r}
 tribble(
@@ -216,7 +218,7 @@ tribble(
   flextable()
 ```
 
-- Another Bayesian paper compared using AIC and shows the following results (Sellers and Shmueli)
+- Another Bayesian paper compared using AIC and shows the following results [@sellers_flexible_2010]
 
 ```{r}
 tribble(
@@ -235,3 +237,5 @@ tribble(
 
 ## References
 
+::: {#refs}
+:::

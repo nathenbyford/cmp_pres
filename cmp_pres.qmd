@@ -31,6 +31,7 @@ library(flextable)
 - **Identity Link**: Used for normally distributed data (linear regression).
 - **Logit Link**: Used for binary outcome data (logistic regression).
 - **Log Link**: Used for count data (Poisson regression).
+- **Reciprocal Link**: Used for increasing rate that levels off (Gamma regression).
 
 
 ## Over-Dispersed Data
@@ -89,7 +90,7 @@ Almost any real world count data is subject to the possibility of over-dispersio
 
 ## Candidate Distributions
 
-1. Negative-Binomial
+1. Negative-Binomial (Poisson-Gamma model)
 2. Generalized Poisson
 3. Double Poisson
 4. Conway-Maxwell-Poisson (CMP)
@@ -133,7 +134,7 @@ tibble(x = nb_data) |>
 
 
 pois_data <- rpois(1000, 6)
-zip_data <- c(pois_data, rep(0, 1000))
+zip_data <- c(pois_data, rep(0, 500))
 
 N <- max(pois_data) + 1
 
@@ -195,6 +196,19 @@ $$
 f(Y = y) = \frac{\lambda^y}{(y!)^\nu Z(\lambda, \nu)}, \quad Z(\lambda, \nu) = \sum_{y=0}^\infty \frac{\lambda^y}{(y!)^\nu}
 $$
 - Includes spacial cases [@sellers_com-poisson_2012] of Poison$(\lambda)$ when $\nu = 1$, geometric$(\lambda)$
+- Model can be implemented using R package `COMPoissonReg`
+
+## Zero Inflated Distributions
+
+- Zero inflated distributions are piece-wise distributions with components for 0s and non-0s
+- For example the zero inflated Poisson (ZIP) has pmf
+$$
+f(Y = y) = \cases{
+  \pi + (1-\pi)e^{-\lambda} &\text{if } y = 0\\
+  (1 - \pi)\frac{\lambda^y e^{-\lambda}}{y!} &\text{if } y = 1, 2, \ldots
+}
+$$
+- Zero inflated framework extends to other distributions to further capture over-dispersion
 
 ## Model comparisons {.smaller}
 
@@ -208,6 +222,18 @@ tribble(
   flextable()
 ```
 
+- Car crash analysis using the DP and CMP model [@zou_evaluating_2013]
+
+```{r}
+tribble(
+  ~Model, ~DP, ~NB, ~CMP,
+  "AIC", 3268.2, 3199.2, NA,
+  "MSPE", 2.62, 2.727, 2.73 
+) |> 
+  flextable()
+```
+
+
 - Bayesian paper compared Poisson, Negative Binomial, and CMP for longitudinal counts using DIC to compare. [@alam_bayesian_2023]
 
 ```{r}
@@ -218,6 +244,8 @@ tribble(
   flextable()
 ```
 
+## Further Comparison
+
 - Another Bayesian paper compared using AIC and shows the following results [@sellers_flexible_2010]
 
 ```{r}
@@ -227,6 +255,8 @@ tribble(
 ) |>
   flextable()
 ```
+
+
 
 ## Results
 

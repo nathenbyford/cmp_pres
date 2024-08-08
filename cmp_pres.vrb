@@ -1,0 +1,21 @@
+\frametitle{Zero Inflated Distributions}
+\protect\hypertarget{zero-inflated-distributions}{}
+\begin{itemize}
+\tightlist
+\item
+  Zero inflated distributions are piece-wise distributions with
+  components for 0s and non-0s
+\item
+  For example the zero inflated Poisson (ZIP) has pmf \[
+  Pr(Y = y) = \cases{
+  \pi + (1-\pi)e^{-\lambda} &\text{if } y = 0\\
+  (1 - \pi)\frac{\lambda^y e^{-\lambda}}{y!} &\text{if } y = 1, 2, \ldots
+  }
+  \]
+\item
+  Zero inflated framework extends to other distributions to further
+  capture over-dispersion and zero inflation
+\item
+  Models can be fit using the \texttt{zeroinfl()} function in the
+  package \texttt{pscl}
+\end{itemize}

@@ -2,11 +2,8 @@
 title: 'Generalized Linear Models'
 subtitle: 'For Over-Dispersed Data'
 format: 
-  baylor_theme-revealjs:
-    author: 'Nathen Byford'
-    footer: 'Nathen Byford'
-    controls: auto
-    embed-resources: true
+  beamer: 
+    keep-tex: true
 bibliography: texts.bib
 csl: https://www.zotero.org/styles/american-statistical-association
 ---

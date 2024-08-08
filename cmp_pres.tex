@@ -56,7 +56,6 @@
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
 \usepackage{lmodern}
-\usetheme[]{AnnArbor}
 \ifPDFTeX\else  
     % xetex/luatex font selection
 \fi
@@ -103,28 +102,38 @@
 \makeatletter
 \def\fps@figure{htbp}
 \makeatother
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
 \newlength{\cslhangindent}
 \setlength{\cslhangindent}{1.5em}
 \newlength{\csllabelwidth}
 \setlength{\csllabelwidth}{3em}
-\newlength{\cslentryspacingunit} % times entry-spacing
-\setlength{\cslentryspacingunit}{\parskip}
-\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
- {% don't indent paragraphs
-  \setlength{\parindent}{0pt}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
   % turn on hanging indent if param 1 is 1
   \ifodd #1
-  \let\oldpar\par
-  \def\par{\hangindent=\cslhangindent\oldpar}
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
   \fi
   % set entry spacing
-  \setlength{\parskip}{#2\cslentryspacingunit}
- }%
- {}
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
 \usepackage{calc}
-\newcommand{\CSLBlock}[1]{#1\hfill\break}
-\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
-\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
 \usepackage{fontspec}
@@ -154,10 +163,6 @@
 \definecolor{quarto-callout-warning-color-frame}{HTML}{f0ad4e}
 \definecolor{quarto-callout-tip-color-frame}{HTML}{02b875}
 \definecolor{quarto-callout-caution-color-frame}{HTML}{fd7e14}
-\makeatother
-\makeatletter
-\makeatother
-\makeatletter
 \makeatother
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
@@ -195,29 +200,24 @@
 \newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
 \makeatother
 \makeatletter
+\makeatother
+\makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
-\makeatletter
-\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
-\makeatother
-\makeatletter
-\@ifundefined{shadecolor}{\definecolor{shadecolor}{rgb}{.97, .97, .97}}
-\makeatother
-\makeatletter
-\makeatother
-\makeatletter
-\makeatother
+
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\usepackage{bookmark}
+
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
   pdftitle={Generalized Linear Models},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
+
 
 \title{Generalized Linear Models}
 \subtitle{For Over-Dispersed Data}
@@ -226,7 +226,7 @@
 
 \begin{document}
 \frame{\titlepage}
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, frame hidden, breakable, interior hidden, borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt, enhanced]}{\end{tcolorbox}}\fi
+
 
 \begin{frame}{Basics of Generalized Linear Models (GLMs)}
 \protect\hypertarget{basics-of-generalized-linear-models-glms}{}
@@ -266,6 +266,9 @@
   regression).
 \item
   \textbf{Log Link}: Used for count data (Poisson regression).
+\item
+  \textbf{Reciprocal Link}: Used for increasing rate that levels off
+  (Gamma regression).
 \end{itemize}
 \end{frame}
 
@@ -283,16 +286,16 @@
   \begin{itemize}
   \tightlist
   \item
-    Similarly equi-dispersion would refer to having variance equal to
+    Similarly equa-dispersion would refer to having variance equal to
     the mean.
   \end{itemize}
 \end{itemize}
 
-\begin{tcolorbox}[enhanced jigsaw, titlerule=0mm, colback=white, coltitle=black, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, breakable, rightrule=.15mm, opacityback=0, title={Poisson regression}, bottomtitle=1mm, bottomrule=.15mm, opacitybacktitle=0.6, toptitle=1mm, arc=.35mm, toprule=.15mm, leftrule=.75mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, colbacktitle=quarto-callout-note-color!10!white, breakable, arc=.35mm, leftrule=.75mm, opacitybacktitle=0.6, titlerule=0mm, colframe=quarto-callout-note-color-frame, toptitle=1mm, left=2mm, bottomrule=.15mm, toprule=.15mm, coltitle=black, bottomtitle=1mm, title={Poisson regression}, rightrule=.15mm, opacityback=0, colback=white]
 
 Poisson regression is the most popular method for modeling count data.
 The Poisson distribution brings with it the assumption of
-equi-dispersion that is often unsatisfied.
+equa-dispersion that is often unsatisfied.
 
 \end{tcolorbox}
 \end{frame}
@@ -319,21 +322,13 @@ equi-dispersion that is often unsatisfied.
 \end{column}
 
 \begin{column}{0.5\textwidth}
-\begin{figure}
+\begin{center}
+\includegraphics[width=0.8\textwidth,height=\textheight]{daily_stock_trades.png}
+\end{center}
 
-{\centering \includegraphics[width=0.8\textwidth,height=\textheight]{daily_stock_trades.png}
-
-}
-
-\end{figure}
-
-\begin{figure}
-
-{\centering \includegraphics[width=0.5\textwidth,height=\textheight]{woodlark.png}
-
-}
-
-\end{figure}
+\begin{center}
+\includegraphics[width=0.5\textwidth,height=\textheight]{woodlark.png}
+\end{center}
 \end{column}
 \end{columns}
 
@@ -385,7 +380,7 @@ over-dispersion.
 \begin{itemize}
 \tightlist
 \item
-  Zero inflated disitributions
+  Zero inflated distributions
 
   \begin{itemize}
   \tightlist
@@ -437,29 +432,20 @@ over-dispersion.
 \item
   Parameters: \(\lambda\), \(\theta\)
 \item
-  Mean: \(\lambda / (1- \theta)\)
+  Mean: \(\lambda / (1- \theta) \quad\) Variance:
+  \(\lambda / (1- \theta)^3\)
 \item
-  Variance: \(\lambda / (1- \theta)^3\)
+  Model introduced by Consul 1989 as a way to modify the Poisson to
+  handle over-dispersed and under-dispersed count data
+\item
+  Probability distribution function \[
+  Pr(Y = y) = \frac{\lambda(\lambda + \theta y)^{y-1} e^{-(\lambda + \theta y)}}{y!}, \quad \lambda > 0,\space \theta \in \mathbb{R}
+  \]
 \end{itemize}
 
-\[
-f(Y = y) = \frac{\lambda(\lambda + \theta y)^{y-1} e^{-(\lambda + \theta y)}}{y!}, \quad \lambda > 0,\space \theta \in \mathbb{R}
-\]
-
-\begin{itemize}
-\tightlist
-\item
-  Designed to extend to overdispersed and underdispersed count data
-\end{itemize}
-
-\begin{longtable}[]{@{}lll@{}}
-\toprule\noalign{}
-\(\theta = 0\) & \(\theta > 0\) & \(\theta < 0\) \\
-\midrule\noalign{}
-\endhead
-reduces to Poisson & Models overdispersion & Models underdispersion \\
-\bottomrule\noalign{}
-\end{longtable}
+\begin{center}
+\includegraphics[width=0.5\textwidth,height=\textheight]{gp_table.png}
+\end{center}
 \end{frame}
 
 \begin{frame}{Double Poisson}
@@ -469,12 +455,17 @@ reduces to Poisson & Models overdispersion & Models underdispersion \\
 \item
   Parameters: \(\mu\), \(\theta\)
 \item
-  variance: \(\mu / \theta\)
+  Mean: \(\mu \quad\) Variance:\footnote<.->{Over-dispersed for
+    \((\theta < 1)\), under-dispersed for \((\theta > 1)\),
+    Poisson\((\theta = 1)\)} \(\mu / \theta\)
 \item
-  Extension of the double exponential family (Efron 1986) defined by pmf
-  \[
-  f(Y = y) = (\theta^{1/2}e^{-\theta\mu}) \left(\frac{e^{y}y^y}{y!}\right) \left(\frac{e \mu}{y}\right)^{\theta y}
+  Extension of the double exponential family (Efron 1986) with
+  approximate pmf \[
+  Pr(Y = y) = (\theta^{1/2}e^{-\theta\mu}) \left(\frac{e^{y}y^y}{y!}\right) \left(\frac{e \mu}{y}\right)^{\theta y}
   \]
+\item
+  The exact double Poisson (DP) density includes a normalizing constant
+  \(\sum_{y=0}^{\infty} Pr(Y = y) \approx 1 + \frac{1 - \theta}{12\mu\theta}(1 + \frac{1}{\mu\theta})\)
 \end{itemize}
 \end{frame}
 
@@ -483,14 +474,45 @@ reduces to Poisson & Models overdispersion & Models underdispersion \\
 \begin{itemize}
 \tightlist
 \item
-  Parameters: \(\lambda\), \(\nu\)
+  Parameters:\footnote<.->{A mean parameterized CMP was introduced with
+    better interpretation and computation (Huang 2017)} \(\lambda\),
+  \(\nu\)
+\item
+  Mean: \(\mu \approx \lambda + 1/2\nu - 1/2 \quad\)
+  Variance:\footnote<.->{Approximations only accurate under specific
+    conditions \(\lambda > 10^\nu\) or \(\nu \le 1\) (Sellers et al.
+    2012)} \(\sigma^2 \approx \lambda / \nu\)
 \item
   Weighted Poison distribution with pmf: \[
-  f(Y = y) = \frac{\lambda^y}{(y!)^\nu Z(\lambda, \nu)}, \quad Z(\lambda, \nu) = \sum_{y=0}^\infty \frac{\lambda^y}{(y!)^\nu}
+  Pr(Y = y) = \frac{\lambda^y}{(y!)^\nu Z(\lambda, \nu)}, \quad Z(\lambda, \nu) = \sum_{y=0}^\infty \frac{\lambda^y}{(y!)^\nu}
   \]
 \item
-  Includes spacial cases (Sellers et al. 2012) of Poison\((\lambda)\)
-  when \(\nu = 1\), geometric\((\lambda)\)
+  Includes spacial cases (Sellers et al. 2012) of Poison when
+  \(\nu = 1\), geometric when \(\nu \to 0\), and Bernoulli when
+  \(\nu \to \infty\)
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Zero Inflated Distributions}
+\protect\hypertarget{zero-inflated-distributions}{}
+\begin{itemize}
+\tightlist
+\item
+  Zero inflated distributions are piece-wise distributions with
+  components for 0s and non-0s
+\item
+  For example the zero inflated Poisson (ZIP) has pmf \[
+  Pr(Y = y) = \cases{
+  \pi + (1-\pi)e^{-\lambda} &\text{if } y = 0\\
+  (1 - \pi)\frac{\lambda^y e^{-\lambda}}{y!} &\text{if } y = 1, 2, \ldots
+  }
+  \]
+\item
+  Zero inflated framework extends to other distributions to further
+  capture over-dispersion and zero inflation
+\item
+  Models can be fit using the \texttt{zeroinfl()} function in the
+  package \texttt{pscl}
 \end{itemize}
 \end{frame}
 
@@ -521,19 +543,79 @@ reduces to Poisson & Models overdispersion & Models underdispersion \\
 
 \ascline{1.5pt}{666666}{1-4}
 
-\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Model}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Poisson}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{NB}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{GP}}} \\
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Model}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Poisson}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{NB}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{GP}}}} \\
 
 \ascline{1.5pt}{666666}{1-4}\endfirsthead 
 
 \ascline{1.5pt}{666666}{1-4}
 
-\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Model}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Poisson}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{NB}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{GP}}} \\
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Model}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Poisson}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{NB}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{GP}}}} \\
 
 \ascline{1.5pt}{666666}{1-4}\endhead
 
 
 
-\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{DIC}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{1,291.8}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{1,273.9}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{1,265.6}}} \\
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{DIC}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{1,291.8}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{1,273.9}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{1,265.6}}}} \\
+
+\ascline{1.5pt}{666666}{1-4}
+
+
+
+\end{longtable*}
+
+
+
+\arrayrulecolor[HTML]{000000}
+
+\global\setlength{\arrayrulewidth}{\Oldarrayrulewidth}
+
+\global\setlength{\tabcolsep}{\Oldtabcolsep}
+
+\renewcommand*{\arraystretch}{1}
+
+\begin{itemize}
+\tightlist
+\item
+  Car crash analysis using the DP and CMP model (Zou et al. 2013)
+\end{itemize}
+
+\global\setlength{\Oldarrayrulewidth}{\arrayrulewidth}
+
+\global\setlength{\Oldtabcolsep}{\tabcolsep}
+
+\setlength{\tabcolsep}{2pt}
+
+\renewcommand*{\arraystretch}{1.5}
+
+
+
+\providecommand{\ascline}[3]{\noalign{\global\arrayrulewidth #1}\arrayrulecolor[HTML]{#2}\cline{#3}}
+
+\begin{longtable*}[c]{|p{0.75in}|p{0.75in}|p{0.75in}|p{0.75in}}
+
+
+
+\ascline{1.5pt}{666666}{1-4}
+
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Model}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{DP}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{NB}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{CMP}}}} \\
+
+\ascline{1.5pt}{666666}{1-4}\endfirsthead 
+
+\ascline{1.5pt}{666666}{1-4}
+
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Model}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{DP}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{NB}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{CMP}}}} \\
+
+\ascline{1.5pt}{666666}{1-4}\endhead
+
+
+
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{AIC}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{3,268.20}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{3,199.200}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{MSPE}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{2.62}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{2.727}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{2.73}}}} \\
 
 \ascline{1.5pt}{666666}{1-4}
 
@@ -576,19 +658,19 @@ reduces to Poisson & Models overdispersion & Models underdispersion \\
 
 \ascline{1.5pt}{666666}{1-4}
 
-\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Model}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Poisson}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{NB}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{CMP}}} \\
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Model}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Poisson}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{NB}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{CMP}}}} \\
 
 \ascline{1.5pt}{666666}{1-4}\endfirsthead 
 
 \ascline{1.5pt}{666666}{1-4}
 
-\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Model}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Poisson}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{NB}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{CMP}}} \\
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Model}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Poisson}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{NB}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{CMP}}}} \\
 
 \ascline{1.5pt}{666666}{1-4}\endhead
 
 
 
-\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{DIC}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{1,362.39}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{1,350.67}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{1,348.87}}} \\
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{DIC}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{1,362.39}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{1,350.67}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{1,348.87}}}} \\
 
 \ascline{1.5pt}{666666}{1-4}
 
@@ -605,7 +687,10 @@ reduces to Poisson & Models overdispersion & Models underdispersion \\
 \global\setlength{\tabcolsep}{\Oldtabcolsep}
 
 \renewcommand*{\arraystretch}{1}
+\end{frame}
 
+\begin{frame}{Further Comparison}
+\protect\hypertarget{further-comparison}{}
 \begin{itemize}
 \tightlist
 \item
@@ -631,19 +716,19 @@ reduces to Poisson & Models overdispersion & Models underdispersion \\
 
 \ascline{1.5pt}{666666}{1-4}
 
-\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Model}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{CMP}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Poisson}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Neg-Bin}}} \\
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Model}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{CMP}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Poisson}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Neg-Bin}}}} \\
 
 \ascline{1.5pt}{666666}{1-4}\endfirsthead 
 
 \ascline{1.5pt}{666666}{1-4}
 
-\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Model}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{CMP}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Poisson}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{Neg-Bin}}} \\
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Model}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{CMP}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Poisson}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Neg-Bin}}}} \\
 
 \ascline{1.5pt}{666666}{1-4}\endhead
 
 
 
-\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{AIC}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{5,073}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{5,589}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{5,077}}} \\
+\multicolumn{1}{>{\raggedright}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{AIC}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{5,073}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{5,589}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.75in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{5,077}}}} \\
 
 \ascline{1.5pt}{666666}{1-4}
 
@@ -660,22 +745,140 @@ reduces to Poisson & Models overdispersion & Models underdispersion \\
 \global\setlength{\tabcolsep}{\Oldtabcolsep}
 
 \renewcommand*{\arraystretch}{1}
+
+\begin{itemize}
+\tightlist
+\item
+  Mean parameterized CMP AIC and run time
+\end{itemize}
+
+\global\setlength{\Oldarrayrulewidth}{\arrayrulewidth}
+
+\global\setlength{\Oldtabcolsep}{\tabcolsep}
+
+\setlength{\tabcolsep}{2pt}
+
+\renewcommand*{\arraystretch}{1.5}
+
+
+
+\providecommand{\ascline}[3]{\noalign{\global\arrayrulewidth #1}\arrayrulecolor[HTML]{#2}\cline{#3}}
+
+\begin{longtable*}[c]{|p{1.42in}|p{0.82in}|p{1.70in}|p{0.72in}}
+
+
+
+\ascline{1.5pt}{666666}{1-4}
+
+\multicolumn{1}{>{\raggedright}m{\dimexpr 1.42in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Model}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.82in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{GP}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.7in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{CMP(Mean-param)}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.72in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{CMP}}}} \\
+
+\ascline{1.5pt}{666666}{1-4}\endfirsthead 
+
+\ascline{1.5pt}{666666}{1-4}
+
+\multicolumn{1}{>{\raggedright}m{\dimexpr 1.42in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Model}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.82in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{GP}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.7in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{CMP(Mean-param)}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.72in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{CMP}}}} \\
+
+\ascline{1.5pt}{666666}{1-4}\endhead
+
+
+
+\multicolumn{1}{>{\raggedright}m{\dimexpr 1.42in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{AIC}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.82in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{453.75}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.7in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{440.82}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.72in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{440.5}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\raggedright}m{\dimexpr 1.42in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Run\ time\ (Sec)}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.82in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{0.33}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 1.7in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{8.50}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.72in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{31.5}}}} \\
+
+\ascline{1.5pt}{666666}{1-4}
+
+
+
+\end{longtable*}
+
+
+
+\arrayrulecolor[HTML]{000000}
+
+\global\setlength{\arrayrulewidth}{\Oldarrayrulewidth}
+
+\global\setlength{\tabcolsep}{\Oldtabcolsep}
+
+\renewcommand*{\arraystretch}{1}
+
+\begin{itemize}
+\tightlist
+\item
+  Zero inflated Poisson regression model comparison for occupational
+  injuries (Wang et al. 2003)
+\end{itemize}
+
+\global\setlength{\Oldarrayrulewidth}{\arrayrulewidth}
+
+\global\setlength{\Oldtabcolsep}{\tabcolsep}
+
+\setlength{\tabcolsep}{2pt}
+
+\renewcommand*{\arraystretch}{1.5}
+
+
+
+\providecommand{\ascline}[3]{\noalign{\global\arrayrulewidth #1}\arrayrulecolor[HTML]{#2}\cline{#3}}
+
+\begin{longtable*}[c]{|p{1.39in}|p{0.97in}|p{0.97in}}
+
+
+
+\ascline{1.5pt}{666666}{1-3}
+
+\multicolumn{1}{>{\raggedright}m{\dimexpr 1.39in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Model}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.97in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Poisson}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.97in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{ZIP}}}} \\
+
+\ascline{1.5pt}{666666}{1-3}\endfirsthead 
+
+\ascline{1.5pt}{666666}{1-3}
+
+\multicolumn{1}{>{\raggedright}m{\dimexpr 1.39in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Model}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.97in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Poisson}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.97in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{ZIP}}}} \\
+
+\ascline{1.5pt}{666666}{1-3}\endhead
+
+
+
+\multicolumn{1}{>{\raggedright}m{\dimexpr 1.39in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{Log-Likelihood}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.97in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{-409.678}}}} & \multicolumn{1}{>{\raggedleft}m{\dimexpr 0.97in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{11}\selectfont{\global\setmainfont{DejaVu Sans}{-397.704}}}} \\
+
+\ascline{1.5pt}{666666}{1-3}
+
+
+
+\end{longtable*}
+
+
+
+\arrayrulecolor[HTML]{000000}
+
+\global\setlength{\arrayrulewidth}{\Oldarrayrulewidth}
+
+\global\setlength{\tabcolsep}{\Oldtabcolsep}
+
+\renewcommand*{\arraystretch}{1}
 \end{frame}
 
-\begin{frame}{Results}
+\begin{frame}[fragile]{Results}
 \protect\hypertarget{results}{}
 \begin{itemize}
 \tightlist
 \item
   It has been found and shown that modeling over-dispersed data with
-  impropper distributions leads to biased results.
+  improper distributions leads to biased results.
 \item
   To prevent biased results from over dispersed data, using models such
   as the CMP, GP, or DP model can prove beneficial
 \item
-  Overall the CMP is found to have the most flexibility modeling of
-  over- and under-dispersion due to the GP model truncating for some
-  dispersion parameters
+  Zero inflated models have better fit when there are increased number
+  of zeros observed and can easily be implemented
+\item
+  Some of these models are easy to implement such as the CMP and
+  CMP(mean-parameterized) in packages \texttt{COMPoissonReg} and
+  \texttt{mpcmp}
 \end{itemize}
 \end{frame}
 
@@ -700,6 +903,11 @@ Gschlößl, S., and Czado, C. (2008), {``Modelling count data with
 overdispersion and spatial effects,''} \emph{Statistical Papers}, 49,
 531--552. \url{https://doi.org/10.1007/s00362-006-0031-6}.
 
+\leavevmode\vadjust pre{\hypertarget{ref-huang_mean-parametrized_2017}{}}%
+Huang, A. (2017), {``Mean-parametrized {Conway}--{Maxwell}--{Poisson}
+regression models for dispersed counts,''} \emph{Statistical Modelling},
+17, 359--380. \url{https://doi.org/10.1177/1471082X17697749}.
+
 \leavevmode\vadjust pre{\hypertarget{ref-sellers_com-poisson_2012}{}}%
 Sellers, K. F., Borle, S., and Shmueli, G. (2012), {``The {COM}-poisson
 model for count data: A survey of methods and applications,''}
@@ -712,8 +920,21 @@ Sellers, K. F., and Shmueli, G. (2010),
 model for count data},''} \emph{The Annals of Applied Statistics}, 4,
 943--961.
 
+\leavevmode\vadjust pre{\hypertarget{ref-wang_bivariate_2003}{}}%
+Wang, K., Lee, A. H., Yau, K. K. W., and Carrivick, P. J. W. (2003),
+{``A bivariate zero-inflated {Poisson} regression model to analyze
+occupational injuries,''} \emph{Accident Analysis \& Prevention}, 35,
+625--629. \url{https://doi.org/10.1016/S0001-4575(02)00036-2}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-zou_evaluating_2013}{}}%
+Zou, Y., Geedipally, S. R., and Lord, D. (2013), {``Evaluating the
+double poisson generalized linear model,''} \emph{Accident Analysis \&
+Prevention}, 59, 497--505.
+\url{https://doi.org/10.1016/j.aap.2013.07.017}.
+
 \end{CSLReferences}
 \end{frame}
+
 
 
 
